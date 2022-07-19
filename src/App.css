@@ -1,5 +1,5 @@
 .App {
-  padding: 2rem;
+  padding: 0.5rem 2rem;
 }
 
 li {
@@ -12,13 +12,13 @@ li {
 
 .form {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   width: 20vw;
   margin-bottom: 1rem;
 }
 
-.form input {
-  margin-bottom: 0.5rem;
+.form > * {
+  margin-right: 0.5rem;
 }
 
 .button-delete {

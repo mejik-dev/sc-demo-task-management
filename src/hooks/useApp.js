@@ -101,6 +101,8 @@ export const useApp = () => {
       },
       fetchPolicy: 'cache-and-network',
     });
+
+    e.target.reset();
   };
 
   const todoTasks = data?.tasks?.filter((item) => item.status === 'TODO') ?? [];

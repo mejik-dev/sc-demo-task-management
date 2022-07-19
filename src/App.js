@@ -1,9 +1,9 @@
-import "./App.css";
+import './App.css';
 
-import * as React from "react";
-import TaskList from "./components/TaskList";
-import FormTask from "./components/FormTask";
-import { useApp } from "./hooks/useApp";
+import * as React from 'react';
+import TaskList from './components/TaskList';
+import FormTask from './components/FormTask';
+import { useApp } from './hooks/useApp';
 
 const App = () => {
   const {
@@ -23,6 +23,34 @@ const App = () => {
 
   return (
     <div className="App">
+      <h2>Search Tasks</h2>
+      <form onSubmit={handleSearchTasks}>
+        <div className="form">
+          <input
+            type="search"
+            onChange={(e) => setSearchedName(e.target.value)}
+            placeholder="e.g Reading"
+          />
+          <select
+            id="status"
+            name="status"
+            defaultValue="TODO"
+            onChange={(e) => setSearchedStatus(e.target.value)}
+          >
+            <option disabled>Status</option>
+            <option value="DONE">DONE</option>
+            <option value="TODO">TODO</option>
+          </select>
+          <button type="submit">Search</button>
+        </div>
+      </form>
+      <hr />
+      <p>Found {searchedTasks.length} data</p>
+      <ul>
+        {searchedTasks.map((item) => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
       <h2>Add Task</h2>
       <FormTask onSubmit={handleCreateTask} setName={setName} />
       <hr />
@@ -62,36 +90,6 @@ const App = () => {
           )}
         </>
       )}
-      <hr />
-      <h2>Search Tasks</h2>
-      <form onSubmit={handleSearchTasks}>
-        <div className="form">
-          <label>Name:</label>
-          <input
-            type="text"
-            onChange={(e) => setSearchedName(e.target.value)}
-            placeholder="e.g Reading"
-          />
-          <label>Status:</label>
-          <select
-            id="status"
-            name="status"
-            defaultValue="TODO"
-            onChange={(e) => setSearchedStatus(e.target.value)}
-          >
-            <option value="DONE">DONE</option>
-            <option value="TODO">TODO</option>
-          </select>
-        </div>
-        <button type="submit">Search</button>
-      </form>
-      <hr />
-      <p>Found {searchedTasks.length} data</p>
-      <ul>
-        {searchedTasks.map((item) => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
     </div>
   );
 };
