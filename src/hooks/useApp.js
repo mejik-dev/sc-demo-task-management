@@ -2,7 +2,7 @@ import * as React from "react";
 import { useQuery, useLazyQuery, useMutation, gql } from "@apollo/client";
 
 const GET_TASKS = gql`
-  query getTasks($where: TaskFilter) {
+  query GetTasks($where: TaskFilter) {
     tasks(where: $where, orderBy: createdAt_DESC) {
       id
       name
@@ -11,22 +11,21 @@ const GET_TASKS = gql`
   }
 `;
 const CREATE_TASK = gql`
-  mutation createTask($input: CreateTaskInput!) {
+  mutation CreateTask($input: CreateTaskInput!) {
     createTask(input: $input) {
-      name
-      status
+      id
     }
   }
 `;
 const UPDATE_TASK = gql`
-  mutation updateTask($id: String!, $input: UpdateTaskInput!) {
+  mutation UpdateTask($id: String!, $input: UpdateTaskInput!) {
     updateTask(id: $id, input: $input) {
       id
     }
   }
 `;
 const DELETE_TASK = gql`
-  mutation deleteTask($id: String!) {
+  mutation DeleteTask($id: String!) {
     deleteTask(id: $id) {
       id
     }
