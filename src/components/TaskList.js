@@ -1,30 +1,23 @@
-import React from 'react';
-import { useUpdateTask } from '../hooks/updateTask';
+import * as React from "react";
 
-const TaskList = ({ task, refetch }) => {
-  const onCompleted = () => {
-    refetch();
-  };
-  const id = task?.id;
-  const { updateTask } = useUpdateTask(onCompleted);
-  const handleChangeStatus = async (e) => {
-    const selectedValue = e.target.value;
-    updateTask(id, selectedValue);
+const TaskList = ({ task, onChange }) => {
+  const handleChangeStatus = (e) => {
+    onChange(task.id, e.target.value);
   };
 
   return (
-    <div>
-      <span>{task?.name}</span>
+    <li>
+      <span className="list">{task.name}</span>
       <select
-        defaultValue={task?.status}
-        onChange={handleChangeStatus}
-        name="status"
         id="status"
+        name="status"
+        defaultValue={task.status}
+        onChange={handleChangeStatus}
       >
         <option value="DONE">DONE</option>
         <option value="TODO">TODO</option>
       </select>
-    </div>
+    </li>
   );
 };
 

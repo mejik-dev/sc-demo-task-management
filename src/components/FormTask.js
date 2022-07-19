@@ -1,34 +1,12 @@
-import React from 'react';
-import { useCreateTask } from '../hooks/useCreateTask';
+import * as React from "react";
 
-const FormTask = ({ refetch }) => {
-  const onCompleted = () => {
-    refetch();
-  };
-
-  const { createTask, error } = useCreateTask(onCompleted);
-  const [name, setName] = React.useState('');
-  const [status, setStatus] = React.useState('TODO');
-
-  const handleSubmitTask = (e) => {
-    e.preventDefault();
-    createTask({
-      name,
-      status,
-    });
-
-    if (error) {
-      alert('Error update Data!');
-    }
-  };
-
+const FormTask = ({ onSubmit, setName }) => {
   return (
-    <form onSubmit={handleSubmitTask}>
+    <form onSubmit={onSubmit}>
       <input
         type="text"
         onChange={(e) => setName(e.target.value)}
-        value={name}
-        placeholder="nama task"
+        placeholder="e.g Reading"
       />
       <button>Add Task</button>
     </form>

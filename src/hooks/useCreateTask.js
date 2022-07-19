@@ -1,11 +1,10 @@
-import { useMutation, gql } from '@apollo/client';
+import { useMutation, gql } from "@apollo/client";
 
 const CREATE_TASK_QUERY = gql`
   mutation createTask($input: CreateTaskInput!) {
     createTask(input: $input) {
       name
       status
-      dueDate
     }
   }
 `;
