@@ -31,28 +31,24 @@ const App = () => {
             <>
               <h2>Todo</h2>
               <ul>
-                {todoTasks
-                  .filter((item) => item.status === "TODO")
-                  .map((item) => (
-                    <TaskList
-                      key={item.id}
-                      task={item}
-                      onChange={handleUpdateTask}
-                    />
-                  ))}
+                {todoTasks.map((item) => (
+                  <TaskList
+                    key={item.id}
+                    task={item}
+                    onChange={handleUpdateTask}
+                  />
+                ))}
               </ul>
               {!todoTasks.length && <p>Empty task</p>}
               <h2>Done</h2>
               <ul>
-                {doneTasks
-                  ?.filter((item) => item.status === "DONE")
-                  .map((item) => (
-                    <TaskList
-                      key={item.id}
-                      task={item}
-                      onChange={handleUpdateTask}
-                    />
-                  ))}
+                {doneTasks.map((item) => (
+                  <TaskList
+                    key={item.id}
+                    task={item}
+                    onChange={handleUpdateTask}
+                  />
+                ))}
               </ul>
               {!doneTasks.length && <p>Empty task</p>}
             </>
