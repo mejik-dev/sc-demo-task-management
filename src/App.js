@@ -1,9 +1,9 @@
-import "./App.css";
+import './App.css';
 
-import * as React from "react";
-import TaskList from "./components/TaskList";
-import FormTask from "./components/FormTask";
-import { useApp } from "./hooks/useApp";
+import * as React from 'react';
+import TaskList from './components/TaskList';
+import FormTask from './components/FormTask';
+import { useApp } from './hooks/useApp';
 
 const App = () => {
   const {
@@ -15,6 +15,7 @@ const App = () => {
     handleCreateTask,
     handleSearchTasks,
     handleUpdateTask,
+    handleDeleteTask,
     setName,
     setSearchedName,
     setSearchedStatus,
@@ -40,6 +41,7 @@ const App = () => {
                     key={item.id}
                     task={item}
                     onChange={handleUpdateTask}
+                    onClick={handleDeleteTask}
                   />
                 ))}
               </ul>
@@ -51,6 +53,7 @@ const App = () => {
                     key={item.id}
                     task={item}
                     onChange={handleUpdateTask}
+                    onClick={handleDeleteTask}
                   />
                 ))}
               </ul>
