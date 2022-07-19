@@ -1,5 +1,5 @@
-import * as React from "react";
-import { useQuery, useLazyQuery, useMutation, gql } from "@apollo/client";
+import * as React from 'react';
+import { useQuery, useLazyQuery, useMutation, gql } from '@apollo/client';
 
 const GET_TASKS = gql`
   query GetTasks($where: TaskFilter) {
@@ -33,9 +33,9 @@ const DELETE_TASK = gql`
 `;
 
 export const useApp = () => {
-  const [name, setName] = React.useState("");
-  const [searchedName, setSearchedName] = React.useState("");
-  const [searchedStatus, setSearchedStatus] = React.useState("TODO");
+  const [name, setName] = React.useState('');
+  const [searchedName, setSearchedName] = React.useState('');
+  const [searchedStatus, setSearchedStatus] = React.useState('TODO');
 
   const { loading, error, data } = useQuery(GET_TASKS);
   const [searchTasks, { data: dataSearchTasks }] = useLazyQuery(GET_TASKS);
@@ -44,17 +44,21 @@ export const useApp = () => {
   const [updateTask] = useMutation(UPDATE_TASK);
   const [deleteTask] = useMutation(DELETE_TASK);
 
-  const handleCreateTask = async () => {
+  const handleCreateTask = async (e) => {
+    e.preventDefault();
+
     try {
       await createTask({
         variables: {
           input: {
             name,
-            status: "TODO",
+            status: 'TODO',
           },
         },
         refetchQueries: [{ query: GET_TASKS }],
       });
+
+      e.target.reset();
     } catch (error) {
       console.log(error);
     }
@@ -95,12 +99,12 @@ export const useApp = () => {
           status: searchedStatus,
         },
       },
-      fetchPolicy: "cache-and-network",
+      fetchPolicy: 'cache-and-network',
     });
   };
 
-  const todoTasks = data?.tasks?.filter((item) => item.status === "TODO") ?? [];
-  const doneTasks = data?.tasks?.filter((item) => item.status === "DONE") ?? [];
+  const todoTasks = data?.tasks?.filter((item) => item.status === 'TODO') ?? [];
+  const doneTasks = data?.tasks?.filter((item) => item.status === 'DONE') ?? [];
   const searchedTasks = dataSearchTasks?.tasks ?? [];
 
   return {
