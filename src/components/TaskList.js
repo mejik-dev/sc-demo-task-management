@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from "react";
 
 const TaskList = ({ task, onChange, onClick }) => {
   const handleChangeStatus = (e) => {

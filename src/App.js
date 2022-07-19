@@ -1,9 +1,9 @@
-import './App.css';
+import "./App.css";
 
-import * as React from 'react';
-import TaskList from './components/TaskList';
-import FormTask from './components/FormTask';
-import { useApp } from './hooks/useApp';
+import * as React from "react";
+import TaskList from "./components/TaskList";
+import FormTask from "./components/FormTask";
+import { useApp } from "./hooks/useApp";
 
 const App = () => {
   const {
