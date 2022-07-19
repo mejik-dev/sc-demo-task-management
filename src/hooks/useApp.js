@@ -1,9 +1,9 @@
 import * as React from "react";
-import { useQuery, useMutation, gql } from "@apollo/client";
+import { useQuery, useLazyQuery, useMutation, gql } from "@apollo/client";
 
-const TASKS = gql`
-  {
-    tasks(orderBy: createdAt_DESC) {
+const GET_TASKS = gql`
+  query getTasks($where: TaskFilter) {
+    tasks(where: $where, orderBy: createdAt_DESC) {
       id
       name
       status
@@ -28,8 +28,11 @@ const UPDATE_TASK = gql`
 
 export const useApp = () => {
   const [name, setName] = React.useState("");
+  const [searchedName, setSearchedName] = React.useState("");
+  const [searchedStatus, setSearchedStatus] = React.useState("TODO");
 
-  const { loading, error, data } = useQuery(TASKS);
+  const { loading, error, data } = useQuery(GET_TASKS);
+  const [searchTasks, { data: dataSearchTasks }] = useLazyQuery(GET_TASKS);
 
   const [createTask] = useMutation(CREATE_TASK);
   const [updateTask] = useMutation(UPDATE_TASK);
@@ -43,7 +46,7 @@ export const useApp = () => {
             status: "TODO",
           },
         },
-        refetchQueries: [{ query: TASKS }],
+        refetchQueries: [{ query: GET_TASKS }],
       });
     } catch (error) {
       console.log(error);
@@ -57,23 +60,42 @@ export const useApp = () => {
           id,
           input: { status },
         },
-        refetchQueries: [{ query: TASKS }],
+        refetchQueries: [{ query: GET_TASKS }],
       });
     } catch (error) {
       console.log(error);
     }
   };
 
+  const handleSearchTasks = (e) => {
+    e.preventDefault();
+
+    searchTasks({
+      variables: {
+        where: {
+          name_contains: searchedName,
+          status: searchedStatus,
+        },
+      },
+      fetchPolicy: "cache-and-network",
+    });
+  };
+
   const todoTasks = data?.tasks?.filter((item) => item.status === "TODO") ?? [];
   const doneTasks = data?.tasks?.filter((item) => item.status === "DONE") ?? [];
+  const searchedTasks = dataSearchTasks?.tasks ?? [];
 
   return {
     doneTasks,
     error,
     loading,
+    searchedTasks,
     todoTasks,
     handleCreateTask,
+    handleSearchTasks,
     handleUpdateTask,
     setName,
+    setSearchedName,
+    setSearchedStatus,
   };
 };

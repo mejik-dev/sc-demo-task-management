@@ -5,3 +5,14 @@
 .list {
   margin-right: 0.5rem;
 }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 20vw;
+  margin-bottom: 1rem;
+}
+
+.form input {
+  margin-bottom: 0.5rem;
+}

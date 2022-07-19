@@ -10,10 +10,14 @@ const App = () => {
     doneTasks,
     error,
     loading,
+    searchedTasks,
     todoTasks,
     handleCreateTask,
+    handleSearchTasks,
     handleUpdateTask,
     setName,
+    setSearchedName,
+    setSearchedStatus,
   } = useApp();
 
   return (
@@ -29,7 +33,7 @@ const App = () => {
             <p>Loading, please wait...</p>
           ) : (
             <>
-              <h2>Todo</h2>
+              <h3>Todo</h3>
               <ul>
                 {todoTasks.map((item) => (
                   <TaskList
@@ -40,7 +44,7 @@ const App = () => {
                 ))}
               </ul>
               {!todoTasks.length && <p>Empty task</p>}
-              <h2>Done</h2>
+              <h3>Done</h3>
               <ul>
                 {doneTasks.map((item) => (
                   <TaskList
@@ -55,6 +59,36 @@ const App = () => {
           )}
         </>
       )}
+      <hr />
+      <h2>Search Tasks</h2>
+      <form onSubmit={handleSearchTasks}>
+        <div className="form">
+          <label>Name:</label>
+          <input
+            type="text"
+            onChange={(e) => setSearchedName(e.target.value)}
+            placeholder="e.g Reading"
+          />
+          <label>Status:</label>
+          <select
+            id="status"
+            name="status"
+            defaultValue="TODO"
+            onChange={(e) => setSearchedStatus(e.target.value)}
+          >
+            <option value="DONE">DONE</option>
+            <option value="TODO">TODO</option>
+          </select>
+        </div>
+        <button type="submit">Search</button>
+      </form>
+      <hr />
+      <p>Found {searchedTasks.length} data</p>
+      <ul>
+        {searchedTasks.map((item) => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
     </div>
   );
 };
