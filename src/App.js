@@ -1,16 +1,15 @@
-import './App.css';
+import "./App.css";
 
-import * as React from 'react';
-import TaskList from './components/TaskList';
-import FormTask from './components/FormTask';
-import { useApp } from './hooks/useApp';
+import * as React from "react";
+import TaskList from "./components/TaskList";
+import FormTask from "./components/FormTask";
+import { useApp } from "./hooks/useApp";
 
 const App = () => {
   const {
     doneTasks,
     error,
     loading,
-    searchedTasks,
     todoTasks,
     handleCreateTask,
     handleSearchTasks,
@@ -37,22 +36,15 @@ const App = () => {
             defaultValue="TODO"
             onChange={(e) => setSearchedStatus(e.target.value)}
           >
-            <option disabled>Status</option>
-            <option value="DONE">DONE</option>
+            <option value="" disabled>
+              Select status
+            </option>
             <option value="TODO">TODO</option>
+            <option value="DONE">DONE</option>
           </select>
           <button type="submit">Search</button>
         </div>
       </form>
-      <hr />
-      <p>Found {searchedTasks.length} data</p>
-      <ul>
-        {searchedTasks.map((item) => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
-      <h2>Add Task</h2>
-      <FormTask onSubmit={handleCreateTask} setName={setName} />
       <hr />
       {error ? (
         <p>Something when wrong while fetching the data...</p>
@@ -90,6 +82,9 @@ const App = () => {
           )}
         </>
       )}
+      <h2>Add Task</h2>
+      <FormTask onSubmit={handleCreateTask} setName={setName} />
+      <hr />
     </div>
   );
 };

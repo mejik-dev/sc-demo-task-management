@@ -26,3 +26,7 @@ li {
   border: none;
   margin-left: 1rem;
 }
+
+.button-delete:hover {
+  cursor: pointer;
+}

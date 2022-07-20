@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { useQuery, useLazyQuery, useMutation, gql } from '@apollo/client';
+import * as React from "react";
+import { useQuery, useMutation, gql } from "@apollo/client";
 
 const GET_TASKS = gql`
   query GetTasks($where: TaskFilter) {
@@ -33,12 +33,18 @@ const DELETE_TASK = gql`
 `;
 
 export const useApp = () => {
-  const [name, setName] = React.useState('');
-  const [searchedName, setSearchedName] = React.useState('');
-  const [searchedStatus, setSearchedStatus] = React.useState('TODO');
+  const [name, setName] = React.useState("");
+  const [searchedName, setSearchedName] = React.useState("");
+  const [searchedStatus, setSearchedStatus] = React.useState("TODO");
 
-  const { loading, error, data } = useQuery(GET_TASKS);
-  const [searchTasks, { data: dataSearchTasks }] = useLazyQuery(GET_TASKS);
+  const { loading, error, data, refetch } = useQuery(GET_TASKS, {
+    variables: {
+      where: {
+        name_contains: "",
+        status_in: ["TODO", "DONE"],
+      },
+    },
+  });
 
   const [createTask] = useMutation(CREATE_TASK);
   const [updateTask] = useMutation(UPDATE_TASK);
@@ -52,13 +58,32 @@ export const useApp = () => {
         variables: {
           input: {
             name,
-            status: 'TODO',
+            status: "TODO",
           },
         },
-        refetchQueries: [{ query: GET_TASKS }],
+        refetchQueries: [
+          {
+            query: GET_TASKS,
+            variables: {
+              where: {
+                name_contains: searchedName,
+                status_in: [searchedStatus],
+              },
+            },
+          },
+          {
+            query: GET_TASKS,
+            variables: {
+              where: {
+                name_contains: "",
+                status_in: ["TODO", "DONE"],
+              },
+            },
+          },
+        ],
       });
-
       e.target.reset();
+      setName("");
     } catch (error) {
       console.log(error);
     }
@@ -71,7 +96,26 @@ export const useApp = () => {
           id,
           input: { status },
         },
-        refetchQueries: [{ query: GET_TASKS }],
+        refetchQueries: [
+          {
+            query: GET_TASKS,
+            variables: {
+              where: {
+                name_contains: searchedName,
+                status_in: [status],
+              },
+            },
+          },
+          {
+            query: GET_TASKS,
+            variables: {
+              where: {
+                name_contains: "",
+                status_in: ["TODO", "DONE"],
+              },
+            },
+          },
+        ],
       });
     } catch (error) {
       console.log(error);
@@ -82,7 +126,26 @@ export const useApp = () => {
     try {
       await deleteTask({
         variables: { id },
-        refetchQueries: [{ query: GET_TASKS }],
+        refetchQueries: [
+          {
+            query: GET_TASKS,
+            variables: {
+              where: {
+                name_contains: searchedName,
+                status_in: [searchedStatus],
+              },
+            },
+          },
+          {
+            query: GET_TASKS,
+            variables: {
+              where: {
+                name_contains: "",
+                status_in: ["TODO", "DONE"],
+              },
+            },
+          },
+        ],
       });
     } catch (error) {
       console.log(error);
@@ -92,28 +155,21 @@ export const useApp = () => {
   const handleSearchTasks = (e) => {
     e.preventDefault();
 
-    searchTasks({
-      variables: {
-        where: {
-          name_contains: searchedName,
-          status: searchedStatus,
-        },
+    refetch({
+      where: {
+        name_contains: searchedName,
+        status_in: searchedName ? [searchedStatus] : ["TODO", "DONE"],
       },
-      fetchPolicy: 'cache-and-network',
     });
-
-    e.target.reset();
   };
 
-  const todoTasks = data?.tasks?.filter((item) => item.status === 'TODO') ?? [];
-  const doneTasks = data?.tasks?.filter((item) => item.status === 'DONE') ?? [];
-  const searchedTasks = dataSearchTasks?.tasks ?? [];
+  const todoTasks = data?.tasks?.filter((item) => item.status === "TODO") ?? [];
+  const doneTasks = data?.tasks?.filter((item) => item.status === "DONE") ?? [];
 
   return {
     doneTasks,
     error,
     loading,
-    searchedTasks,
     todoTasks,
     handleCreateTask,
     handleSearchTasks,
